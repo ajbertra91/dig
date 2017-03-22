@@ -1,12 +1,12 @@
 class GameTitle extends Phaser.State {
 
-	create() {
+    create() {
 
-	}
+    }
 
-	startGame() {
-		this.game.state.start("Main");
-	}
+    startGame() {
+        this.game.state.start("Main");
+    }
 
 }
 
