@@ -1,5 +1,6 @@
 // import ExampleObject from 'objects/ExampleObject';
-import ActiveTool from 'objects/ActiveTool';
+import Player from 'objects/Player';
+import Menu from 'menus/Menu';
 
 class Main extends Phaser.State {
 
@@ -22,9 +23,9 @@ class Main extends Phaser.State {
 
     create() {
 
-        //Enable Arcade Physics
+        // Enable Arcade Physics
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
-        //Set the games background colour
+        // Set the games background colour
         this.game.stage.backgroundColor = '#357736';
 
         this.respawnGrp = this.game.add.group();
@@ -49,26 +50,20 @@ class Main extends Phaser.State {
 
         this.createDigSites();
 
-        this.player = this.game.add.sprite(0, 0, 'player');
+        this.player = Player(this.game, {});
         this.spawn();
-        this.player.animations.add('up',    [9,10,11], 10, true);
-        this.player.animations.add('down',  [0,1,2], 10, true);
-        this.player.animations.add('left',  [3,4,5], 10, true);
-        this.player.animations.add('right', [6,7,8], 10, true);
-        this.player.scale.setTo(0.75,0.75);
-
-        this.game.physics.arcade.enable(this.player);
-        this.player.body.collideWorldBounds = true;
         this.game.physics.arcade.collide(this.player, this.treeGroup);
 
+        // Setup Keyboard Controls
         this.cursors = this.game.input.keyboard.createCursorKeys();
+        this.cursors.w = this.game.input.keyboard.addKey(87);
+        this.cursors.a = this.game.input.keyboard.addKey(65);
+        this.cursors.s = this.game.input.keyboard.addKey(83);
+        this.cursors.d = this.game.input.keyboard.addKey(68);
         this.game.camera.follow(this.player);
 
-        this.activeTool = new ActiveTool(this.game, 'hammer-pick');
+        this.PauseMenu = Menu(this.game, 'Tools', 'tool_menu', {});
 
-
-        //Example of including an object
-        //let exampleObject = new ExampleObject(this.game);
     }
 
     update() {
@@ -76,19 +71,19 @@ class Main extends Phaser.State {
         let MAX_VELOCITY = 200;
         this.player.body.maxVelocity.x = MAX_VELOCITY;
         this.player.body.maxVelocity.y = MAX_VELOCITY;
-        if (this.cursors.left.isDown) {
+        if (this.cursors.left.isDown || this.cursors.a.isDown) {
             this.player.body.velocity.x -= VELOCITY;
             this.player.body.velocity.y = 0;
             this.player.animations.play('left');
-        } else if (this.cursors.right.isDown) {
+        } else if (this.cursors.right.isDown || this.cursors.d.isDown) {
             this.player.body.velocity.x += VELOCITY;
             this.player.body.velocity.y = 0;
             this.player.animations.play('right');
-        } else if (this.cursors.up.isDown) {
+        } else if (this.cursors.up.isDown || this.cursors.w.isDown) {
             this.player.body.velocity.y -= VELOCITY;
             this.player.body.velocity.x = 0;
             this.player.animations.play('up');
-        } else if (this.cursors.down.isDown) {
+        } else if (this.cursors.down.isDown || this.cursors.s.isDown) {
             this.player.body.velocity.y += VELOCITY;
             this.player.body.velocity.x = 0;
             this.player.animations.play('down');

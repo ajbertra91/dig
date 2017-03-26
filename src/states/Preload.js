@@ -10,6 +10,7 @@ class Preload extends Phaser.State {
         // player
         this.game.load.spritesheet('player', '/assets/dig_joshua.png', 48,48);
         // tools
+        this.game.load.image('tool_menu', '/assets/tool_menu.png');
         this.game.load.spritesheet('hammer-pick', '/assets/hammer_pick.png', 48,48);
         // maps stuff
         this.game.load.tilemap('tilemapJson_map1', '/assets/map1.json', null, Phaser.Tilemap.TILED_JSON);

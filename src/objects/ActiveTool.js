@@ -1,30 +1,31 @@
-class ActiveTool {
+function ActiveTool(game,tool,obj={}) {
+    obj.button = game.add.button(100, 400, tool, obj.actionOnClick, this, 1, 0, 2);
 
-    constructor(game,tool){
-        //Do something
-        this.button = game.add.button(game.world.centerX - 95, 400, tool, this.actionOnClick, this, 1, 0, 2);
-
-        this.button.onInputOver.add(this.over, this);
-        this.button.onInputOut.add(this.out, this);
-        this.button.onInputUp.add(this.up, this);
+    obj.destroy = function destroy() {
+        obj.button.destroy();
     }
 
-    up() {
+    obj.up = function up() {
         console.log('button up', arguments);
     }
 
-    over() {
+    obj.over = function over() {
         console.log('button over');
     }
 
-    out() {
+    obj.out = function out() {
         console.log('button out');
     }
 
-    actionOnClick() {
+    obj.actionOnClick = function actionOnClick() {
         console.log('actionOnClick Fired');
     }
 
+    obj.button.onInputOver.add(obj.over);
+    obj.button.onInputOut.add(obj.out);
+    obj.button.onInputUp.add(obj.up);
+
+    return obj;
 }
 
 export default ActiveTool;
